@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>HTML5转盘抽奖</title>
+  <style>
+  *{
+      margin:0;
+	  padding:0;
+  }
+
+  #box{
+       position:relative;/*相对定位（参考物）*/
+       width:1280px;
+	   height:800px;
+	   background:#cc0000 url(images/背景.jpg);
+	   margin:100px auto;/*上下100 左右自动(居中)*/
+  }
+  .rotateArrow{
+     position:absolute;/*绝对定位*/
+	 left:285px;/*距离参考物左端的距离*/
+	 top:195px;/*距离参考物上端的距离*/
+     width:237px;
+	 height:400px;
+	 background:url("images/btn.png");
+  }
+  .user{
+     position:absolute;
+     right:230px;/*距离参考物右端的距离*/
+	 top:256px;
+	 width:222px;
+	 height:522px;
+	 /*border:2px solid yellow;边框线：宽度 类型（实心的线） 颜色（黄色）*/
+	 overflow:hidden;/*超出隐藏*/
+  }
+  .result{
+     display:none;
+     position:absolute;
+	 left:201px;
+	 top:345px;
+     width:400px;
+	 height:120px;
+	 background:rgba(0,0,0,0.5);/*透明背景颜色red green blue */
+  } 
+  .result i{
+     position:absolute;
+	 right:0;
+	 top:0;
+     width:24px;
+	 height:24px;
+	 background:url("images/close.png");
+  }
+  .result p{
+     color:#ffffff;
+	 text-align:center;
+	 line-height:120px;
+  }
+  .user ul{
+     position:relative;
+	 top:0px;
+  }
+  .user ul li{
+     list-style:none;/*(去除列表前的小黑原点)*/
+	 height:54px;
+	 background:url("images/user.png") no-repeat left center;
+	 font-size:24px;
+	 color:#ff9900;
+	 text-indent:40px;
+	 line-height:54px;
+  }
+  #box .wrapper img{
+	 position:absolute;
+	 left:560px;
+	 top:0px;
+	 cursor:pointer;
+
+  
+  }
+  #box .wrapper span{
+		color:#ff9900;
+		position:absolute;
+		left:150px;
+		font-size:30px;
+		top:40px;
+
+		
+  }
+  #box .wrapper .num{
+		left:300px;
+		color:blue;
+		
+
+  }
+  </style>
+ </head>
+ <body>
+  <div id="box">
+	<div class="wrapper">
+		<span>你的抽奖次数:</span><span class="num"></span>
+		<img src="images/+1.png" class="add"></img>
+	</div>
+    <div class="rotateArrow"></div>
+	<div class="user">
+	    <ul>
+		    <li>1569****851</li>
+			<li>1821****352</li>
+			<li>1316****612</li>
+			<li>1835****946</li>
+			<li>1876****107</li>
+			<li>1815****641</li>
+			<li>1523****231</li>
+			<li>1834****264</li>
+			<li>1701****753</li>
+			<li>1527****559</li>
+			<li>1826****714</li>
+			<li>1515****134</li>
+			<li>1346****281</li>
+			<li>1876****936</li>
+			<li>1818****428</li>
+			<li>1562****093</li>
+			<li>1831****401</li>
+		</ul>
+	</div>
+	<div class="result">
+	    <i></i>
+		<p>很遗憾，你没有中奖！</p>
+	</div>
+  </div>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery.rotate.min.js"></script>
+  <script>
+		var num = 5;
+		$(".num").text(num);
+        $(".rotateArrow").click(function(){
+	
+			    if(num){
+					num--;
+								$(".num").text(num);
+
+				var n = Math.floor(Math.random()*10);//生成0-9之间的随机整 数
+				switch (n)                           //Math.random()0-1之间的随机数
+				{                                    //Math.random()*10  0-10之间的随机数
+				case 0:                              //Math.floor()向下取整
+				    rotateFun(18,"恭喜你获得四等奖！");
+					break;
+				case 1:
+				    rotateFun(54,"恭喜你获得二等奖！");
+					break;
+				case 2:
+				    rotateFun(90,"恭喜你获得四等奖！");
+					break;
+				case 3:
+				    rotateFun(126,"很遗憾，你没有中奖！");
+					break;
+				case 4:
+				    rotateFun(162,"恭喜你获得二等奖！");
+					break;
+				case 5:
+				    rotateFun(198,"恭喜你获得一等奖！");
+					break;
+				case 6:
+				    rotateFun(234,"恭喜你获得三等奖！");
+					break;
+				case 7:
+				    rotateFun(270,"很遗憾，你未中奖！");
+					break;
+				case 8:
+				    rotateFun(306,"恭喜你获得三等奖！");
+					break;
+				case 9:
+				    rotateFun(342,"恭喜你获得一等奖！");
+					break;
+				}
+			}
+			    
+		})
+		$(".add").on("click",function(){
+			num ++;
+			$(".num").text(num);
+		})
+		function rotateFun(deg,text){/*deg 形参*/
+		
+		   $(".rotateArrow").rotate({
+		        angle:0,//初始旋转角度
+				duration:5000,//动画执行的时间
+				animateTo:deg + 1440,//旋转的角度
+				callback:function(){//旋转结束返回结果
+					//让结果框显示
+				   $(".result").show();
+	       $(".result p").html(text);
+				}
+		   });
+		}
+        $(".result i").click(function(){
+		   $(".result").hide(); /*点击隐藏结果框*/
+		})
+		//让用户名循环滚动
+		setInterval(function(){
+		    $(".user ul").animate({"top":"-54px"},500,function(){
+			//动画执行结束，将移上去的第一个添加到后面去
+			//$(this)指代$(".user ul")
+		    $(this).append($(".user ul li:first"))
+			//把ul的top值改为0
+            $(this).css("top",0);
+		});
+		},1000);
+	
+  </script>
+ </body>
+</html>
